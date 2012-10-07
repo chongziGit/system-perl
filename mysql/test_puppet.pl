@@ -10,4 +10,4 @@ my $host={
 	my $puppet=puppet->new(host => $host);
 	#$puppet->request;
 	#$puppet->response;
-	puppet->create;
+	$puppet->create;

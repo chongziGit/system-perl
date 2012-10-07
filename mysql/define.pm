@@ -4,7 +4,7 @@ use Moose;
 use IO::File;
 use Data::Dumper;
 
-has config => (is => 'rw',builer => '_parse');
+has 'config' => (is => 'rw',builder => '_parse');
 has 'conf' => ( is =>'rw',default => '/root/mysql/conf.sh');
 
 sub _parse {

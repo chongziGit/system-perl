@@ -94,17 +94,20 @@ sub save {
 	foreach(@{$data}){
 		my $zone=$_;
 		foreach (keys(%{$zone})){
-			print $file  $_,"\n";
-			my $line=$zone->{$_};
+			my $lines=$zone->{$_};
+			print $file $_,"\n";
 			my $cmd;
-			foreach (keys(%{$line})){
-				if (exists $line->{$_}->{value}){
-					$cmd=$_ . '=' . $line->{$_}->{value};
+			foreach (@{$lines}){
+				my $line=$_;
+				foreach (keys(%{$line})){
+					if (exists $line->{$_}->{value}){
+						$cmd=$_ . '=' . $line->{$_}->{value};
+					}
+					else {
+						$cmd=$_ ;
+					}
+					print $file $cmd,"\n";
 				}
-				else {
-					$cmd=$_ ;
-				}
-				print $file $cmd,"\n";
 			}
 		}
 	}
@@ -123,7 +126,7 @@ sub _parse {
 	while(<$fh>){
 		chomp;
 		next if /^$/;
-		if (/^\[(.*)\]/){
+		if (/^(\[.*\])/){
 			if ($status == 0 ){
 				my $tmp_key=$1;
 				$key=$str->trim($tmp_key);

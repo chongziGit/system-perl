@@ -56,7 +56,6 @@ sub response {
 sub create {
 	my $self=shift;
 	my $config=$self->config;
-	print Dumper $config,"\n";
 	my $conf=config->new;
 	my $puppet_dir=$config->{puppet_dir};
 	my $puppet_module= $puppet_dir . 'moules/';
@@ -69,7 +68,6 @@ sub create {
 	my $mysql_puppet_conf=$mysql_puppet_conf_path . 'my.cnf';
 	my $mysql_pp=IO::File->new(">$puppet_pp_mysql");
 	$self->add_config('mysql_puppet_conf_path' ,$mysql_puppet_conf_path);
-	$conf->save($mysql_puppet_conf);
 	print $mysql_pp <<EOF;
 		node '\\d+\\.$config->{dns_domain}' {
         		include mysql
@@ -77,9 +75,8 @@ sub create {
 EOF
 	mkpath $puppet_module_pp unless -d $puppet_module_pp;
 	mkpath $mysql_puppet_conf_path unless -d $mysql_puppet_conf_path;
-	copy './my.cnf', $mysql_puppet_conf_path unless -e $mysql_puppet_conf;
-#	my $puppet_module_mysql=$puppet_module_pp . 'init' . $puppet_conf_pp;
-	my $mysql_module_pp=IO::File->new(">$puppet_module_pp");
+	my $puppet_module_mysql=$puppet_module_pp . 'init' . $puppet_conf_pp;
+	my $mysql_module_pp=IO::File->new(">$puppet_module_mysql");
 	my $mysql_conf_puppet=qw#puppet:///mdules/mysql/my.cnf#;
 	print $mysql_conf_puppet,"\n";
 	print $mysql_module_pp <<EOF;
@@ -94,5 +91,7 @@ EOF
 	}
 EOF
 
+	$conf->config;
+	$conf->save($mysql_puppet_conf);
 }
 1

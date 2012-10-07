@@ -2,7 +2,7 @@
 package Server;
 use Moose;
 use Expect;
-use Scalar::Quote;
+use string;
 use Try::Tiny;
 use define;
 use Data::Dumper;
@@ -55,12 +55,13 @@ sub exec_cmd {
 	my $cmd=shift;
 	my $prompt=shift || '#';
 	my $exp=$self->exp;
+	my $str=string->new;
 	push (@{$cmd},'');
 	try {
 		foreach(@$cmd){
 			s/\n$//;
 			my $command=$_;
-			$command=Scalar::Quote::quote($_) if $command =~ /'?"/;
+			$command=$str->quote($_) if $command =~ /'?"/;
 			$exp->send("$command\n") or warn "$command exec error" if ($exp->expect(undef,$prompt));
 		}
 	}catch {
