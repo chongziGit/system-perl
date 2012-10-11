@@ -44,7 +44,7 @@ sub response {
 	my $os=$self->os($self->host);
 	my $host_domain=$self->host_domain;
 	my $puppet_server=$self->puppet_server;
-	$self->error("puppet add $host_domain error") if system("/root/mysql/puppet.sh add $host_domain");
+	$self->error("puppet add $host_domain error") if system("./puppet.sh add $host_domain");
 	$os->login;
 	$self->error($os->error) if $os->error;
 	my $cmd=["puppetd  --test --server $puppet_server "];

@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 package string;
 use Moose;
+use Encode qw/decode_utf8/;
 use Scalar::Quote;
 use Digest::MD5;
 use Aut::Base64;
