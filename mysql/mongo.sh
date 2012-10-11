@@ -1,0 +1,10 @@
+#!/bin/bash
+source yum.sh
+function mongo_create {
+	yum_download 'mongo-10gen'
+	yum_download 'mongo-10gen-server'
+	yum install mongo-10gen mongo-10gen-server
+}
+function mongo_start {
+	/etc/init.d/mongod start
+}
