@@ -8,15 +8,13 @@ has host => (is => 'rw');
 
 sub os  {
 		my $self=shift;
-		my $conn_host=shift || {user => 'root',pwd => 123456,host => 192.168.1.201};
+		my $conn_host=shift;
 		my $conn=Server->new(user => $conn_host->{user} ,pwd => $conn_host->{pwd} ,host => $conn_host->{host} );
 		return $conn;
 }
 sub mongo {
 		my $self=shift;
-		my $host=shift || 'localhost';
-		my $port=shift || '27017';
-		my $conn=MongoDB::Connection->new(host => $host, port => $port);
+		my $conn=MongoDB::Connection->new(host => 'localhost', port => 27017);
 		return $conn;;
 }
 1
