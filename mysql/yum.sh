@@ -1,7 +1,8 @@
 #!/bin/bash
 source ./conf.sh
-yum_repo_file='/etc/yum.repos.d/server.repo'
-yum_http_server_root='/var/www/html'
+yum_repo_file="${yum_repo_dir}/server.repo"
+yum_repo_mongo="$yum_repo_dir/mongo.repo"
+yum_http_server_root="${http_dir}"
 yum_dir="${yum_http_server_root}/yum/server/"
 yum_soft_list_dir="${yum_dir}/repodata/"
 yum_soft_list_file="${yum_dir}/repodata/repomd.xml"
@@ -30,6 +31,15 @@ function yum_server {
 	/etc/init.d/httpd start	
 }
 function yum_repo {
+	case $system_type in
+32)
+	os_type=i686
+	;;
+64)
+	os_type=x86_64
+	;;
+esac
+
 	cat > $yum_repo_file <<EOF
 [server]
 
@@ -40,8 +50,16 @@ baseurl=http://$yum_server/yum/server
 enabled=1
 gpgcheck=0
 EOF
+
+[ -e $yum_dir/server.repo ] && rm -f $yum_dir/server.repo
 cp $yum_repo_file $yum_dir/server.repo
-echo "yum_repo=http://${yum_server}/yum/server/server.repo" >> ./conf.sh
+cat > $yum_repo_mongo <<EOF
+[10gen]
+name=10gen Repository
+baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/$os_type
+gpgcheck=0
+enabled=1
+EOF
 }
 function yum_add {
 	file=$1

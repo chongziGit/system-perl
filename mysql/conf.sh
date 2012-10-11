@@ -1,9 +1,12 @@
 #!/bin/bash
-yum_server=192.168.11.110
-dns_server=192.168.11.110
-puppet_server=192.168.11.110
+yum_server=192.168.1.200
+dns_server=192.168.1.200
+puppet_server=192.168.1.200
 dns_domain=youpin.com
-network="192.168.11"
+network="192.168.1"
 conf_path=/etc/
 puppet_dir=/etc/puppet/
-yum_repo=http://192.168.11.110/yum/server/server.repo
+yum_repo_dir='/etc/yum.repos.d/'
+http_dir='/var/www//html/'
+system_type='64'
+yum_repo=http://192.168.1.200/yum/server/server.repo
