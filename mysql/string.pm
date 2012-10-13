@@ -5,6 +5,8 @@ use Encode qw/decode_utf8/;
 use Scalar::Quote;
 use Digest::MD5;
 use Aut::Base64;
+use use URI::Escape qw/uri_escape_utf8/;
+use Lingua::Han::PinYin;
 
 
 has 'str' => (is => 'rw');
@@ -60,4 +62,28 @@ sub utf8 {
 	$self->str($str_utf8);
 	return $str_utf8;
 }
+
+sub escape {
+	my $self=shift;
+	my $str=shift || $self->str;
+	my $str_escape=uri_escape_utf8($str);
+	$self->str($str_escape);
+	return $str_escape;
+}
+
+sub unescape {
+	my $self=shift;
+	my $str=shift || $self->str;
+	my $str_unescape=uri_unescape($str);
+	return $str_unescape;
+}
+
+sub pinyin {
+	my $self=shift;
+	my $str=shift || $self->str;
+	my $h2p= Lingua::Han::PinYin->new();
+	my $pinyin=$h2p->han2pinyin($self->utf8($str));
+	return $pinyin;
+}
 1
+
