@@ -39,7 +39,7 @@ sub mongo {
 
 sub mysql {
 	my $self=shift;
-	my $conn_host=shift || {user => 'test',pwd => 'test' ,host => 'test',port => '3379',db => 'test',type => 'mysql'};
+	my $conn_host=shift || {user => 'test',pwd => 'test' ,host => 'test',port => 'test',db => 'test',type => 'mysql'};
 	my $conn;
 	eval {
 		$conn=DBIx::Simple->connect(
