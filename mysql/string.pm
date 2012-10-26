@@ -1,13 +1,17 @@
 #!/usr/bin/perl
 package string;
 use Moose;
-use Encode qw/decode_utf8/;
+use Encode qw/is_utf8 decode_utf8/;
 use Scalar::Quote;
 use Digest::MD5;
 use Aut::Base64;
-use use URI::Escape qw/uri_escape_utf8/;
+use URI::Escape qw/uri_escape_utf8 uri_unescape/;
 use Lingua::Han::PinYin;
+use Lingua::ZH::MMSEG;
+use Data::Types qw/is_string is_int is_float/;
+use Perl6::Say;
 
+extends 'error','debug','json';
 
 has 'str' => (is => 'rw');
 
@@ -52,7 +56,9 @@ sub base64 {
 sub type {
 	my $self=shift;
 	my $str=shift || $self->str;
-	$str / 1 ? return 'String' : return 'Numeric';
+	return 'int' if is_int($str);
+	return 'float' if is_float($str);
+	return 'string' if is_string($str);
 }
 
 sub utf8 {
@@ -85,5 +91,17 @@ sub pinyin {
 	my $pinyin=$h2p->han2pinyin($self->utf8($str));
 	return $pinyin;
 }
-1
 
+sub mmeg {
+	my $self=shift;
+	my $str=shift;
+	$str=$self->utf8($str);
+	my @w=mmseg($str);
+	return \@w;
+}
+sub echo  {
+	my $self=shift;
+	my $str=shift || $self->str;
+	say $str;
+}
+1
