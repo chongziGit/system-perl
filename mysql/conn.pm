@@ -10,7 +10,7 @@ has host => (is => 'rw');
 
 sub os  {
 		my $self=shift;
-		my $conn_host=shift || {user => 'root',pwd => 123456,host => 192.168.1.201};
+		my $conn_host=shift || {user => 'root',pwd => 123456,host => test};
 		my $conn;
 		eval {
 			$conn=Server->new(user => $conn_host->{user} ,pwd => $conn_host->{pwd} ,host => $conn_host->{host} ) || warn "连接 $conn_host->{host} 失败 : $self->error";
@@ -39,7 +39,7 @@ sub mongo {
 
 sub mysql {
 	my $self=shift;
-	my $conn_host=shift || {user => 'youpin',pwd => 'ZHNnZmRnZmtybGV3PTR6Cg==' ,host => '192.168.0.108',port => '3379',db => '51youpin',type => 'mysql'};
+	my $conn_host=shift || {user => 'test',pwd => 'test' ,host => 'test',port => '3379',db => 'test',type => 'mysql'};
 	my $conn;
 	eval {
 		$conn=DBIx::Simple->connect(
